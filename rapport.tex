@@ -1,0 +1,30 @@
+%pdflatex -halt-on-error -aux-directory=tmp -output-directory=tmp rapport.tex%
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Rapport de projet : Jeu de Dames en réseau}
+\author{Anthony Bertrand, Quentin Bandera}
+\date{}
+
+\begin{document}
+    \pagenumbering{gobble}
+    \maketitle
+    \tableofcontents
+    \newpage
+    \pagenumbering{arabic}
+    \section{Introduction}
+
+    \section{notes}
+        \subsection{choix du protocole de transport}
+        Dans le monde du jeu vidéo en ligne, le protocole UDP est très souvent utilisé. UDP possède une faible latence pour le traitement
+        ce qui est l'élement recherché dans des jeux nerveux comme Overwatch, League of Legends, Unreal Tournament etc... Dans notre
+        cas, le jeu se fera en tour par tour. Notre choix se porte donc sur TCP car nous ne voulons pas de perte de paquet lorsque le joueur
+        valide son coup.\\
+        Nous aurions pu utiliser un protocole applicatif existant, se basant sur UDP, voire même créer notre propre protocole mais par soucis
+        de temps, nous nous contenterons de TCP.
+\end{document}
