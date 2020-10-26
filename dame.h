@@ -22,7 +22,7 @@ typedef struct pion
 typedef enum{false, true}Booleen;
 
 void init_game(int plateau[]);
-Pion choisir_pion();
+Pion choisir_case();
 Booleen verif_coup(int plateau[], Pion p, Pion p_dest);
 void jouer_coup(int plateau[], int joueur);
 Booleen game_over(int plateau[]);

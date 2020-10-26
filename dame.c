@@ -1,6 +1,6 @@
 #include "dame.h"
 
-
+/* créer un plateau de jeu avec les pions bien placés*/
 void init_game(int plateau[]){
 
     //créer les cases vides
@@ -12,7 +12,7 @@ void init_game(int plateau[]){
         }
     }
     
-    //init les pions noires
+    //créer les pions noires
     for(int i = 0; i < 4; i++)
     {
         for (int j = (i+1)%2; j < TAILLE_PLATEAU; j+=2)
@@ -32,20 +32,20 @@ void init_game(int plateau[]){
 }
 
 
-
-Pion choisir_pion()
+/* demande à l'utilisateur de choisir une case */
+Pion choisir_case()
 {
     Pion p;
-    printf("\ncoordonnée X : ");
+    printf("coordonnée X : ");
     scanf("%d", &p.x);
-    while(p.x < 0 || p.x > 7)
+    while(p.x < 0 || p.x > TAILLE_PLATEAU)
     {
         printf("\nveuillez rentrer des coordonnées valides");
         scanf("%d", &p.x);
     }
-    printf("\ncoordonnée Y : ");
+    printf("coordonnée Y : ");
     scanf("%d", &p.y);
-    while(p.y < 0 || p.y > 7)
+    while(p.y < 0 || p.y > TAILLE_PLATEAU)
     {
         printf("\nveuillez entrer des coordonnées valides");
         scanf("%d", &p.y);
@@ -53,6 +53,7 @@ Pion choisir_pion()
     return p;
 }
 
+/* vérifie que le coup est règlementaire */
 Booleen verif_coup(int plateau[], Pion p, Pion p_dest)
 {
     if(p_dest.x%2 == p_dest.y%2)
@@ -75,6 +76,13 @@ Booleen verif_coup(int plateau[], Pion p, Pion p_dest)
     
 }
 
+/* à appeler avant chaque choix du joueur pour s'assurer qu'il fait le meilleur coup */
+void verif_coup_obligatoire(int plateau[], int joueur)
+{
+    
+}
+
+/* simule un tour d'action d'un joueur */
 void jouer_coup(int plateau[], int joueur)
 {
     Booleen verif = true;
@@ -82,21 +90,21 @@ void jouer_coup(int plateau[], int joueur)
     while(verif)
     {
         printf("chosir le pion à jouer.\n");
-        p = choisir_pion();
+        p = choisir_case();
         printf("x = %d, y = %d\n", p.x, p.y);
         while(plateau[p.x*TAILLE_PLATEAU + p.y]%2 != joueur || plateau[p.x*TAILLE_PLATEAU + p.y] == CASE_VIDE)
         {
             printf("\nVous devez choisir un pion qui vous appartient.\n");
-            p = choisir_pion();
+            p = choisir_case();
             printf("x = %d, y = %d\n", p.x, p.y);
         }
 
         printf("chosir la destination.\n");
-        p_dest = choisir_pion();
+        p_dest = choisir_case();
         while (plateau[p_dest.x*TAILLE_PLATEAU + p_dest.y] != CASE_VIDE)
         {
             printf("choisir une destination valide\n");
-            p_dest = choisir_pion();
+            p_dest = choisir_case();
         }
         if(!verif_coup(plateau, p, p_dest)) verif = false;
     }
@@ -104,6 +112,7 @@ void jouer_coup(int plateau[], int joueur)
     plateau[p.x*TAILLE_PLATEAU + p.y] = CASE_VIDE;
 }
 
+/* vérifie que le jeu est terminé */
 Booleen game_over(int plateau[])
 {
     if(nb_blanc <= 0 || nb_noir <= 0)
@@ -112,6 +121,7 @@ Booleen game_over(int plateau[])
 }
 
 
+/* affiche l'état du plateau de jeu */
 void afficher_plateau(int plateau[])
 {
     for (int i = 0; i < TAILLE_PLATEAU; i++)
@@ -123,8 +133,11 @@ void afficher_plateau(int plateau[])
         }
         printf("\n");
     }
+    printf("\n");
 }
 
+
+/* vous avez pas besoin que je vous dise ce que fait cette fonction si ?*/
 int main()
 {   
     int plateau[TAILLE_PLATEAU*TAILLE_PLATEAU];
