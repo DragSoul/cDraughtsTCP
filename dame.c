@@ -138,7 +138,7 @@ void afficher_plateau(int plateau[])
 
 
 /* vous avez pas besoin que je vous dise ce que fait cette fonction si ?*/
-int main()
+int global()
 {   
     int plateau[TAILLE_PLATEAU*TAILLE_PLATEAU];
     

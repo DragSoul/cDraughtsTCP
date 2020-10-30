@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-    int sockfd, connfd; 
+    int sockfd, connfd, plateau[TAILLE_PLATEAU*TAILLE_PLATEAU]; 
     char msg_cli[100];
     Pion p;
     struct sockaddr_in servaddr; 
@@ -38,21 +38,16 @@ int main(int argc, char *argv[])
     else
         printf("connected to the server..\n"); 
 
-    char *err;
-    // comme on utilise fgets au lieu de scanf, le strcmp ne fonctionne plus
-    while(strncmp(msg_cli, "quit", 4) != 0){
+    while(1){
+        recv(sockfd, &plateau, sizeof(plateau), 0);
+        afficher_plateau(plateau);
         recv(sockfd, &msg_cli, sizeof(msg_cli), 0);
         printf("%s\n", msg_cli);
         printf("x : ");
         scanf("%d", &p.x);
         printf("y : ");
         scanf("%d", &p.y);
-        //err = fgets(msg_cli, 100, stdin);
-        if(err == NULL)
-        {
-            return 0;
-        }
-        //write(sockfd, (const char*)msg_cli, strlen(msg_cli));
+        /*recevoir le plateau (faire une structure ?)*/
         write(sockfd, (const char*)&p, sizeof(p)); 
     }
     close(sockfd);

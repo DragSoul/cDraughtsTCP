@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-    int sockfd, len, connfd[2];
+    int sockfd, len, connfd[2], plateau[TAILLE_PLATEAU*TAILLE_PLATEAU];
     Pion p;
 
     struct sockaddr_in servaddr, cliaddr;
@@ -63,18 +63,19 @@ int main(int argc, char *argv[])
     }
     
     char buf[100] = "choisi le pion à déplacer";
-    
-    //game loop
+
+    init_game(plateau);
+    //game loop  
     while(1)
     {
-        printf("le plateau....\nJoueur 1 reflechi...\n");
-        write(connfd[0], (const char*)&buf, sizeof(buf));
-        recv(connfd[0], &p, sizeof(p), 0);
-        printf("Coordonnées envoyées par le j1 :\n x : %d\ny : %d\n", p.x, p.y);
-        printf("le plateau....\nJoueur 2 reflechi...\n");
-        write(connfd[1], (const char*)&buf, sizeof(buf));
-        recv(connfd[1], &p, sizeof(p), 0);
-        printf("Coordonnées envoyées par le j2 :\n x : %d\ny : %d\n", p.x, p.y);
+        for (int i = 0; i < 2; i++)
+        {
+            write(connfd[i], (const char*)&plateau, sizeof(plateau));
+            printf("le plateau....\nJoueur %d reflechi...\n", i+1);
+            write(connfd[i], (const char*)&buf, sizeof(buf));
+            recv(connfd[i], &p, sizeof(p), 0);
+            printf("Coordonnées envoyées par le j%d :\n x : %d\ny : %d\n", i+1, p.x, p.y);
+        }
     }
     close(sockfd);
     return 0;
