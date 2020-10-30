@@ -6,7 +6,7 @@ EXEC=dame serv cli
 all: $(EXEC)
 
 serv: serverTCP.o
-	$(CC) -o $@ $^ $(LDFLAGS) -lm
+	$(CC) -Wall -o $@ $^ $(LDFLAGS) -lm
 
 cli: clientTCP.o
 	$(CC) -o $@ $^ $(LDFLAGS) -lm

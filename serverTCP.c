@@ -5,12 +5,13 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include "dame.h"
 
 
 int main(int argc, char *argv[])
 {
-    int sockfd, len, connfd, n;
-    char buffer[100];
+    int sockfd, len, connfd[2];
+    Pion p;
 
     struct sockaddr_in servaddr, cliaddr;
 
@@ -50,20 +51,30 @@ int main(int argc, char *argv[])
     len = sizeof(cliaddr);
 
     //accepte le client
-    connfd = accept(sockfd, (struct sockaddr *)&cliaddr, &len);
-    if (connfd < 0) { 
-        printf("server acccept failed...\n"); 
-        exit(0); 
-    } 
-    else
-        printf("server acccept the client...\n"); 
-
-    while(strncmp(buffer,"quit",4) != 0)
+    for (int i = 0; i < 2; i++)
     {
-        //copie le msg du client dans buffer
-        n = recv(connfd, buffer, sizeof(buffer), 0);
-        //buffer[n] = '\0';
-        printf("From client: %s\n", buffer);
+        if((connfd[i] = accept(sockfd, (struct sockaddr *)&cliaddr, &len)) < 0)
+        {
+            printf("server acccept failed...\n"); 
+            exit(0);
+        }
+        else
+            printf("server acccept the client %d\n", i+1);
+    }
+    
+    char buf[100] = "choisi le pion à déplacer";
+    
+    //game loop
+    while(1)
+    {
+        printf("le plateau....\nJoueur 1 reflechi...\n");
+        write(connfd[0], (const char*)&buf, sizeof(buf));
+        recv(connfd[0], &p, sizeof(p), 0);
+        printf("Coordonnées envoyées par le j1 :\n x : %d\ny : %d\n", p.x, p.y);
+        printf("le plateau....\nJoueur 2 reflechi...\n");
+        write(connfd[1], (const char*)&buf, sizeof(buf));
+        recv(connfd[1], &p, sizeof(p), 0);
+        printf("Coordonnées envoyées par le j2 :\n x : %d\ny : %d\n", p.x, p.y);
     }
     close(sockfd);
     return 0;

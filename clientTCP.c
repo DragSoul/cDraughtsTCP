@@ -4,11 +4,14 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "dame.h"
+
 
 int main(int argc, char *argv[])
 {
     int sockfd, connfd; 
-    char msg_cli[100]; 
+    char msg_cli[100];
+    Pion p;
     struct sockaddr_in servaddr; 
   
     if(argc != 3)
@@ -38,12 +41,19 @@ int main(int argc, char *argv[])
     char *err;
     // comme on utilise fgets au lieu de scanf, le strcmp ne fonctionne plus
     while(strncmp(msg_cli, "quit", 4) != 0){
-        err = fgets(msg_cli, 100, stdin);
+        recv(sockfd, &msg_cli, sizeof(msg_cli), 0);
+        printf("%s\n", msg_cli);
+        printf("x : ");
+        scanf("%d", &p.x);
+        printf("y : ");
+        scanf("%d", &p.y);
+        //err = fgets(msg_cli, 100, stdin);
         if(err == NULL)
         {
             return 0;
         }
-        write(sockfd, (const char*)msg_cli, strlen(msg_cli)); 
+        //write(sockfd, (const char*)msg_cli, strlen(msg_cli));
+        write(sockfd, (const char*)&p, sizeof(p)); 
     }
     close(sockfd);
     return 0; 
