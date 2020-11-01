@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
   
     if(argc != 3)
     {
-        printf("utilisation : ./client [adresse] [port]\n");
+        printf("utilisation   : ./client [adresse] [port]\n");
         return 0;
     }
 
