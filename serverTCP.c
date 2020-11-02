@@ -24,8 +24,8 @@ int main(int argc, char *argv[])
     //création de socket
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     { 
-        perror("HE ! RATE !"); 
-        exit(-1); 
+        perror("problème lors de la création de la socket"); 
+        exit(-1);
     }
 
     servaddr.sin_family = AF_INET; // IPv4 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     
     len = sizeof(cliaddr);
 
-    //accepte le client
+    //accepte les clients
     for (int i = 0; i < 2; i++)
     {
         if((connfd[i] = accept(sockfd, (struct sockaddr *)&cliaddr, &len)) < 0)
